@@ -3,6 +3,8 @@ import { createServer } from 'http'
 import { Server } from 'socket.io'
 import cors from 'cors'
 import config from 'config'
+import log from './utils/logger'
+import { version } from '../package.json'
 
 const port = config.get<number>('port');
 const host = config.get<string>('host');
@@ -20,9 +22,11 @@ const io = new Server( httpServer, {
   }
 });
 
-app.get('/', ( req, res ) => res.send('everthing is went down rather swimilly'));
+app.get('/', ( req, res ) => res.send(`Server is actually running version ${ version }`));
 
 httpServer.listen( port , host, () => {
-  console.log('I am Server and I am listening ...')
+  /**running the server log */
+  log.info(` Server version ${ version }`);
+  log.info(`http://${ host }:${ port }`)
 });
 
